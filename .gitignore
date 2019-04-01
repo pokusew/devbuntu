@@ -1,0 +1,22 @@
+## GENERAL
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# Mac
+.DS_Store
+.supported
+
+# WebStorm
+**/.idea/workspace.xml
+**/.idea/tasks.xml
+
+# VSCode
+.vscode/
+
+*.log
+
+
+## PROJECT
+
