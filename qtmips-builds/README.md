@@ -3,7 +3,7 @@
 
 ## Versions
 
-* [qtmips-macos-v0.6.8.zip](qtmips-macos-v0.6.8.zip)
+* [qtmips-macos-v0.6.8.zip](https://github.com/pokusew/devbuntu/raw/master/qtmips-builds/qtmips-macos-v0.6.8.zip)
 
 
 ## Usage
