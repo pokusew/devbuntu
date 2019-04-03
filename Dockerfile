@@ -16,6 +16,15 @@ RUN apt-get upgrade -y
 RUN apt-get install curl wget git gcc clang make valgrind zip iputils-ping -y
 RUN bash -c "update-alternatives --set cc $(which clang)"
 
+# setup gcc for MIPS cross-build
+# mips-elf-* commands
+# see src/setup-mips.sh
+# see https://cw.fel.cvut.cz/wiki/courses/b35apo/documentation/mips-elf-gnu/start
+# see [trusted=yes] https://askubuntu.com/questions/732985/force-update-from-unsigned-repository-ubuntu-16-04
+RUN bash -c "echo 'deb [trusted=yes] ftp://rtime.felk.cvut.cz/debian unstable main' > /etc/apt/sources.list.d/rtime-debs.list"
+RUN apt-get update
+RUN apt-get install binutils-mips-elf gcc-mips-elf -y
+
 # install nvm
 WORKDIR /root
 RUN git clone https://github.com/creationix/nvm.git .nvm
