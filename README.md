@@ -7,12 +7,12 @@ Ubuntu Docker image for development and experiments, useful especially on macOS
 
 ## What's included
 
-* git
-* preconfigured Bash with [bash-powerline](https://github.com/riobard/bash-powerline) and some other tweaks
-* curl, wget, ping, zip
-* C development: gcc, clang, make, valgrind
-* MIPS development: preconfigured gcc, mips-* commands
-* Node.js: nvm, Node.js 10.x, yarn, npm
+* **git**
+* **preconfigured Bash** with [bash-powerline](https://github.com/riobard/bash-powerline) and some other tweaks
+* **basic utils**: curl, wget, ping, zip
+* **C development**: **clang** (set as default, available also under the _cc_ alias), make, valgrind, gcc
+* **MIPS development**: preconfigured gcc, mips-* commands
+* **Node.js**: [nvm](https://github.com/creationix/nvm), Node.js 10.x, [yarn](https://yarnpkg.com/), npm
 
 see [Dockerfile](/Dockerfile) for complete overview
 
