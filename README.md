@@ -1,24 +1,80 @@
-# Ubuntu Docker image for development
+# devbuntu
 
-Ubuntu with clang, make and valgrind
+[![Docker Hub](https://img.shields.io/badge/docker%20hub-pokusew%2Fdevbuntu-blue.svg?logo=docker&logoColor=white)](https://hub.docker.com/r/pokusew/devbuntu)
 
+Ubuntu Docker image for development and experiments, useful especially on macOS
+
+
+## What's included
+
+* git
+* preconfigured Bash with [bash-powerline](https://github.com/riobard/bash-powerline) and some other tweaks
+* curl, wget, ping, zip
+* C development: gcc, clang, make, valgrind
+* MIPS development: preconfigured gcc, mips-* commands
+* Node.js: nvm, Node.js 10.x, yarn, npm
+
+see [Dockerfile](/Dockerfile) for complete overview
+
+
+## Installation
+
+Docker image name: `pokusew/devbuntu:latest`
+
+You can run image directly, but please specify entrypoint (for example bash).
+For the most convenient usage, see [Usage](#usage) section below.
 
 ## Usage
 
-Create the following alias in Bash:  
-_Replace `$IP` with you current local IP address or set the IP env var._
+
+Add the following Bash function to your Bash config file (`~/.bashrc`, `~/.bash_profile`):  
 
 ```bash
-# --mount type=bind,source=`pwd`,destination=/test is equvialent to -v $PWD:/test
-alias linux='docker run --rm -ti \
---name valgrind \
---mount type=bind,source=$PWD,destination=/test \
--e DISPLAY=$IP:0 -v /tmp/.X11-unix:/tmp/.X11-unix \
--w /test \
-valgrind bash'
+# --mount type=bind,source=$PWD,destination=/test is equivalent to -v $PWD:/test
+function linux() {
+
+	options="$*"
+
+	# see https://docs.docker.com/engine/reference/run/
+	cmd="docker run"
+	cmd+=" --rm"
+	cmd+=" -ti"
+	cmd+=" --name valgrind"
+	cmd+=" --mount type=bind,source=$PWD,destination=/test"
+	
+	# uncomment the following line if you want to use GUI apps through macOS XQuartz X11
+	# also replace $IP with you current local IP address or set the IP env var
+	# cmd+=" -e DISPLAY=$IP:0 -v /tmp/.X11-unix:/tmp/.X11-unix"
+	
+	cmd+=" -w /test"
+
+	if [[ ${options} != "" ]];
+	then
+		cmd+=" ${options}"
+	fi
+
+	cmd+=" pokusew/devbuntu:latest bash"
+
+	echo "Running: ${cmd}"
+
+	${cmd}
+
+}
 ```
 
-Then you can run the image using `linux`. The current terminal working directory will be mounted as /test folder in the container and set as working directory.
+**Then you can run the image using:** 
+
+```bash
+linux
+```
+
+or you can pass any `docker run` arguments as well:
+
+```bash
+linux -p 5000:5000/udp
+```
+
+In any case, **the current terminal working directory** will be mounted as `/test` folder in the container and set as **working directory**.
 
 
 ## GUI applications
@@ -60,3 +116,20 @@ valgrind with some good options enabled:
 ```
 valgrind --leak-check=full --track-origins=yes program-to-test
 ```
+
+## MIPS development with [QtMips](https://github.com/cvut/QtMips)
+
+[QtMips](https://github.com/cvut/QtMips) is MIPS CPU emulator. It is a multi-platform app, which can run on macOS.
+However no builds for macOS are provided, so you have to build QtMips yourselves or you can use my build.
+
+> ### QtMips builds for macOS
+> see [qtmips-builds's README](/qtmips-builds/README.md)
+
+Once you have QtMips running on your macOS, you need to build your source codes (MIPS assembler or C) to ELF files which can be read and executed by QtMips.
+
+You can setup cross-build using your favourite compiler, or your can use pokusew/devbuntu Docker image for it.
+
+If you have a correctly configured Makefile which uses mips-gcc, use can just run `make` inside the container and you do not have to bother with any setup.
+
+
+
