@@ -34,9 +34,6 @@ RUN git checkout v0.34.0
 # configure bash
 WORKDIR /root
 COPY src .
-COPY src .
-COPY src .
-COPY src .
 
 # install node.js
 RUN bash -c "source nvm-init.sh && nvm install 10.* && nvm alias default 10.*"
