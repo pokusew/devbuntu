@@ -13,7 +13,7 @@ RUN apt-get upgrade -y
 # RUN add-apt-repository ppa:ultradvorka/ppa
 # RUN apt-get update
 # RUN apt-get install hstr -y
-RUN apt-get install curl wget git gcc clang make valgrind zip iputils-ping -y
+RUN apt-get install curl wget git gcc clang make valgrind zip iputils-ping gcc-multilib-arm-linux-gnueabihf -y
 RUN bash -c "update-alternatives --set cc $(which clang)"
 
 # setup gcc for MIPS cross-build

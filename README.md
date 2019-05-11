@@ -7,10 +7,13 @@ Ubuntu Docker image for development and experiments, useful especially on macOS
 
 ## What's included
 
+**Ubuntu version: 18.10 (cosmic)**
+
 * **git**
 * **preconfigured Bash** with [bash-powerline](https://github.com/riobard/bash-powerline) and some other tweaks
 * **basic utils**: curl, wget, ping, zip
 * **C development**: **clang** (set as default, available also under the _cc_ alias), make, valgrind, gcc
+* **ARM development**: preconfigured gcc, arm-linux-gnueabihf-* commands (gcc-multilib-arm-linux-gnueabihf)
 * **MIPS development**: preconfigured gcc, mips-* commands
 * **Node.js**: [nvm](https://github.com/creationix/nvm), Node.js 10.x, [yarn](https://yarnpkg.com/), npm
 
@@ -117,12 +120,19 @@ valgrind with some good options enabled:
 valgrind --leak-check=full --track-origins=yes program-to-test
 ```
 
+
 ## MIPS development with [QtMips](https://github.com/cvut/QtMips)
 
 [QtMips](https://github.com/cvut/QtMips) is MIPS CPU emulator. It is a multi-platform app, which can run on macOS.
 However no builds for macOS are provided, so you have to build QtMips yourselves or you can use my build.
 
-> ### QtMips builds for macOS
+**Update:** Currently, I am working on automatized and improved builds for macOS. Once it is finished,
+the changes will be (hopefully) merged into the official [cvut/QtMips](https://github.com/cvut/QtMips) repository.
+
+See [pokusew/QtMips#macos-build](https://github.com/pokusew/QtMips/tree/macos-build) for progress.  
+**See [pokusew/QtMips Azure Pipelines builds](https://dev.azure.com/pokusew/QtMips/_build?definitionId=1) for the new builds.**
+
+> ### Old QtMips builds for macOS
 > see [qtmips-builds's README](/qtmips-builds/README.md)
 
 Once you have QtMips running on your macOS, you need to build your source codes (MIPS assembler or C) to ELF files which can be read and executed by QtMips.
@@ -130,6 +140,3 @@ Once you have QtMips running on your macOS, you need to build your source codes 
 You can setup cross-build using your favourite compiler, or your can use pokusew/devbuntu Docker image for it.
 
 If you have a correctly configured Makefile which uses mips-gcc, use can just run `make` inside the container and you do not have to bother with any setup.
-
-
-
