@@ -9,6 +9,8 @@ Ubuntu Docker image for development and experiments, useful especially on macOS
 
 **Ubuntu version: [19.10 (rolling)](https://hub.docker.com/_/ubuntu/?tab=tags&page=1&name=rolling)**
 
+* based on the official [ubuntu:rolling](https://hub.docker.com/_/ubuntu/?tab=tags&page=1&name=rolling) Docker image, but unminimized for interactive usage
+* **man pages**
 * **git**
 * **preconfigured Bash** with [bash-powerline](https://github.com/riobard/bash-powerline), [hstr](https://github.com/dvorka/hstr) and some other tweaks
 * **basic utils**: curl, wget, ping, zip
