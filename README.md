@@ -7,10 +7,10 @@ Ubuntu Docker image for development and experiments, useful especially on macOS
 
 ## What's included
 
-**Ubuntu version: 18.10 (cosmic)**
+**Ubuntu version: [19.10 (rolling)](https://hub.docker.com/_/ubuntu/?tab=tags&page=1&name=rolling)**
 
 * **git**
-* **preconfigured Bash** with [bash-powerline](https://github.com/riobard/bash-powerline) and some other tweaks
+* **preconfigured Bash** with [bash-powerline](https://github.com/riobard/bash-powerline), [hstr](https://github.com/dvorka/hstr) and some other tweaks
 * **basic utils**: curl, wget, ping, zip
 * **C development**: **clang** (set as default, available also under the _cc_ alias), make, valgrind, gcc
 * **ARM development**: preconfigured gcc, arm-linux-gnueabihf-* commands (gcc-multilib-arm-linux-gnueabihf)
