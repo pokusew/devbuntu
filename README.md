@@ -41,7 +41,7 @@ mkdir -p bin # create bin folder if not exists
 cd bin
 curl https://raw.githubusercontent.com/pokusew/devbuntu/master/linux.sh > linux
 chmod +x linux
-echo "export PATH=\"$PATH:~/bin\"" >> ~/.bashrc # add ~/bin to PATH
+echo 'export PATH="$PATH:~/bin"' >> ~/.bashrc # add ~/bin to PATH
 ```
 
 After that, reopen your terminal window. Now you when you type `linux -h` you should get the following output:
