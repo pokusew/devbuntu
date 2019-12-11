@@ -29,43 +29,35 @@ Docker image name: `pokusew/devbuntu:latest`
 You can run image directly, but please specify entrypoint (for example bash).
 For the most convenient usage, see [Usage](#usage) section below.
 
+
 ## Usage
 
+You can run the devbuntu very easily using the provided simple Bash wrapper script `linux`.
 
-Add the following Bash function to your Bash config file (`~/.bashrc`, `~/.bash_profile`):  
-
+To easily install the `linux` command, copy and paste into your terminal the following code:
 ```bash
-# --mount type=bind,source=$PWD,destination=/test is equivalent to -v $PWD:/test
-function linux() {
-
-	options="$*"
-
-	# see https://docs.docker.com/engine/reference/run/
-	cmd="docker run"
-	cmd+=" --rm"
-	cmd+=" -ti"
-	cmd+=" --name valgrind"
-	cmd+=" --mount type=bind,source=$PWD,destination=/test"
-	
-	# uncomment the following line if you want to use GUI apps through macOS XQuartz X11
-	# also replace $IP with you current local IP address or set the IP env var
-	# cmd+=" -e DISPLAY=$IP:0 -v /tmp/.X11-unix:/tmp/.X11-unix"
-	
-	cmd+=" -w /test"
-
-	if [[ ${options} != "" ]];
-	then
-		cmd+=" ${options}"
-	fi
-
-	cmd+=" pokusew/devbuntu:latest bash"
-
-	echo "Running: ${cmd}"
-
-	${cmd}
-
-}
+cd ~ # change into the home directory
+mkdir -p bin # create bin folder if not exists
+cd bin
+curl https://raw.githubusercontent.com/pokusew/devbuntu/master/linux.sh > linux
+chmod +x linux
+echo "export PATH=\"$PATH:~/bin\"" >> ~/.bashrc # add ~/bin to PATH
 ```
+
+After that, reopen your terminal window. Now you when you type `linux -h` you should get the following output:
+
+    Starts Docker devbuntu container and mounts the current working directory as /test.
+    Usage: linux [options] [docker options]
+    Options:
+      -h > print help and exit
+      -f > do not mount the current working directory
+      -i <image> -> run this image instead of pokusew/devbuntu:latest
+      -c <entrypoint> -> run this program instead of bash
+      -g <your local IP address> -> enable X11 forwarding, see https://github.com/pokusew/devbuntu#gui-applications
+      -n <name> -> use custom container name
+
+_Alternatively: You can manually download [linux.sh](https://github.com/pokusew/devbuntu/blob/master/linux.sh) and use it as you wish._
+
 
 **Then you can run the image using:** 
 
@@ -79,7 +71,8 @@ or you can pass any `docker run` arguments as well:
 linux -p 5000:5000/udp
 ```
 
-In any case, **the current terminal working directory** will be mounted as `/test` folder in the container and set as **working directory**.
+By default, **the current terminal working directory** will be mounted
+as `/test` folder in the container and set as **working directory**. You can disable it with the `-f` option.
 
 
 ## GUI applications
