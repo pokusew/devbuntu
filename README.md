@@ -26,6 +26,8 @@ see [Dockerfile](/Dockerfile) for complete overview
 
 Docker image name: `pokusew/devbuntu:latest`
 
+To download or upgrade the image run: `docker pull pokusew/devbuntu:latest`
+
 You can run image directly, but please specify entrypoint (for example bash).
 For the most convenient usage, see [Usage](#usage) section below.
 
