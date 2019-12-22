@@ -43,6 +43,7 @@ curl https://raw.githubusercontent.com/pokusew/devbuntu/master/linux.sh > linux
 chmod +x linux
 echo 'export PATH="$PATH:~/bin"' >> ~/.bashrc # add ~/bin to PATH
 ```
+_Note: If you used devbuntu previously, you may have created `linux` function in your .bashrc directly. If you did, please remove it, before installing the new linux.sh Bash script._ 
 
 After that, reopen your terminal window. Now you when you type `linux -h` you should get the following output:
 
