@@ -25,6 +25,7 @@ RUN apt-get install -y \
 	man-db \
 	cmake
 RUN bash -c "update-alternatives --set cc $(which clang)"
+RUN bash -c "update-alternatives --set c++ $(which clang++)"
 
 # install nvm
 WORKDIR /root
