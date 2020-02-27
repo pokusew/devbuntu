@@ -5,61 +5,82 @@
 # see https://github.com/pokusew/devbuntu#usage
 ###
 
-linux_print_help() {
+# ASCII color sequences
+# credits: https://stackoverflow.com/questions/5947742/how-to-change-the-output-color-of-echo-in-linux
+# see also: https://unix.stackexchange.com/questions/269077/tput-setaf-color-table-how-to-determine-color-codes
+# to get all 256 colors:
+#   for c in {0..255}; do tput setaf $c; tput setaf $c | cat -v; echo =$c; done
+red=$(tput setaf 1)
+reset=$(tput sgr0)
+
+print_help() {
+	name=$(basename "$0")
 	echo "Starts Docker devbuntu container and mounts the current working directory as /test."
-	echo "Usage: $(basename "$0") [options] [docker options]"
+	echo "Usage: $name [options] [-- docker options]"
 	echo "Options:"
-	echo "  -h > print help and exit"
-	echo "  -f > do not mount the current working directory"
-	echo "  -i <image> -> run this image instead of pokusew/devbuntu:latest"
-	echo "  -c <entrypoint> -> run this program instead of bash"
-	echo "  -g <your local IP address> -> enable X11 forwarding, see https://github.com/pokusew/devbuntu#gui-applications"
-	echo "  -n <name> -> use custom container name"
+	echo "  -h, --help > print help and exit"
+	echo "  -n, --name <name> -> use custom container name"
+	echo "  -nm, --no-mount > do not mount the current working directory"
+	echo "  -i, --image <image> -> run this image instead of pokusew/devbuntu:latest"
+	echo "  -c, --entrypoint <entrypoint> -> run this program instead of bash"
+	echo "  -x, --x11-ip <your local IP address> -> enable X11 forwarding, see https://github.com/pokusew/devbuntu#gui-applications"
+	echo "Examples:"
+	echo "  $name -n test -- --security-opt seccomp=unconfined -p 0.0.0.0:8080:8080/tcp -p 127.0.0.1:12345:12345/tcp"
+	echo "   > runs container with name test with custom docker run options (all options after \"--\" are passed directly to the docker run)"
 }
 
-x11_display_ip=""
-mount=1
 container_name="linux"
+mount=1
 image="pokusew/devbuntu:latest"
 entrypoint="bash"
+x11_display_ip=""
 docker_options=()
 
-# parse options
-#   see print_help() above
-#   notes:
-#     -h > print help and exit with code 0, all other following flags are ingored
-#     unknown option > print help and exit with code 1
-while getopts ":hfi:c:g:n:" opt; do
-	case $opt in
-	f)
-		mount=0
-		;;
-	n)
-		container_name="$OPTARG"
-		;;
-	i)
-		image="$OPTARG"
-		;;
-	c)
-		entrypoint="$OPTARG"
-		;;
-	g)
-		x11_display_ip="$OPTARG"
-		;;
-	h)
-		linux_print_help
+# parse CLI options:
+# - adapted "Getting options" from https://devhints.io/bash
+# - previously getopts was used, but it does not allow much customization
+# - all options after "--" are passed directly to the docker run
+# - -h, --help > print help and exit with code 0, all other following flags are ingored
+while [[ $1 =~ ^- && ! "$1" == "--" ]]; do
+
+	case $1 in
+	-h | --help)
+		print_help
 		exit 0
 		;;
-	?)
-		# forward unrecognzed options to docker run
-		# echo "Unrecognzed option -${OPTARG}" >&2
-		docker_options+=("-$OPTARG")
+	-n | --name)
+		shift
+		container_name="$1"
+		;;
+	-nm | --no-mount)
+		mount=0
+		;;
+	-i | --image)
+		shift
+		image="$1"
+		;;
+	-c | --entrypoint)
+		shift
+		entrypoint="$1"
+		;;
+	-x | --x11-ip)
+		shift
+		x11_display_ip="$1"
+		;;
+	*)
+		echo "${red}Unknown option ${1}${reset}"
+		print_help
+		exit 1
 		;;
 	esac
-done
 
+	# move to the next option
+	shift
+
+done
+# skip options divider
+if [[ $1 == "--" ]]; then shift; fi
 # consider remaining arguments as direct docker options
-shift $((OPTIND - 1))
 if [ $# -gt 0 ]; then
 	docker_options+=("$@")
 fi

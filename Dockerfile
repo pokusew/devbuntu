@@ -22,7 +22,8 @@ RUN apt-get install -y \
 	curl wget git gcc g++ clang make valgrind zip iputils-ping \
 	gcc-multilib-arm-linux-gnueabihf \
 	binutils-mips-elf gcc-mips-elf \
-	man-db
+	man-db \
+	cmake
 RUN bash -c "update-alternatives --set cc $(which clang)"
 
 # install nvm

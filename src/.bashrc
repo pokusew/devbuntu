@@ -54,3 +54,10 @@ alias yarn-gui="yarn global upgrade-interactive"
 # utils
 ###
 alias clean-history="rm ~/.bash_history"
+
+###
+# shortcuts
+###
+alias bu="./build.sh"
+alias te="./test.sh"
+alias run="./run.sh"
