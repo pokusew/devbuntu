@@ -19,6 +19,7 @@ print_help() {
 	echo "Usage: $name [options] [-- docker options]"
 	echo "Options:"
 	echo "  -h, --help > print help and exit"
+	echo "  -v, --version > print version and exit"
 	echo "  -n, --name <name> -> use custom container name"
 	echo "  -nm, --no-mount > do not mount the current working directory"
 	echo "  -i, --image <image> -> run this image instead of pokusew/devbuntu:latest"
@@ -46,6 +47,11 @@ while [[ $1 =~ ^- && ! "$1" == "--" ]]; do
 	case $1 in
 	-h | --help)
 		print_help
+		exit 0
+		;;
+	-v | --version)
+		echo "linux devbuntu runner v0.0.1"
+		echo "homepage: https://github.com/pokusew/devbuntu"
 		exit 0
 		;;
 	-n | --name)
