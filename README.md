@@ -139,4 +139,6 @@ Once you have QtMips running on your macOS, you have several options how to buil
     * b) Or **you can build your sources inside a pokusew/devbuntu Docker container** which contains
             preconfigured gcc for MIPS (mips-* commands). If you have a correctly configured Makefile which uses mips-gcc,
             use can just run `make` inside the container and you do not have to bother with any setup.
-            Or if you want and know how to do it, you can use docker exec from Makefile to invoke the mips-elf-gcc in the running container.
+            Or if you want, you can use docker exec from Makefile to invoke the mips-elf-gcc in the running container.
+            **See [this guide](https://github.com/pokusew/macos-mips-crosscompile-test/tree/master/src/docker-compilation-test)**
+            that describes how to make it work.
