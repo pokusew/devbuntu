@@ -136,7 +136,7 @@ Once you have QtMips running on your macOS, you have several options how to buil
 * If you have only a basic assembly code, QtMips's [integrated assembler](https://github.com/cvut/QtMips#integrated-assembler) might work for you.
 * Or you can build your source codes (MIPS assembler or C) using ...
     * a) ... GCC cross-build toolchain (might be difficult to set up)
-    * b) Or you can build the sources inside a pokusew/devbuntu Docker container which contains
+    * b) Or **you can build your sources inside a pokusew/devbuntu Docker container** which contains
             preconfigured gcc for MIPS (mips-* commands). If you have a correctly configured Makefile which uses mips-gcc,
             use can just run `make` inside the container and you do not have to bother with any setup.
             Or if you want and know how to do it, you can use docker exec from Makefile to invoke the mips-elf-gcc in the running container.
