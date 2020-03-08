@@ -36,6 +36,9 @@ For the most convenient usage, see [Usage](#usage) section below.
 
 You can run the devbuntu very easily using the provided simple Bash wrapper script `linux`.
 
+❗️**Note:** **Bash 5+** is required to run the wrapper script `linux`. macOS contains only **Bash 3.x** by default.
+    See [Upgrading Bash on macOS](https://itnext.io/upgrading-bash-on-macos-7138bd1066ba).
+
 To easily install the `linux` command, copy and paste into your terminal the following code:
 ```bash
 cd ~ # change into the home directory
@@ -44,38 +47,42 @@ cd bin
 curl https://raw.githubusercontent.com/pokusew/devbuntu/master/linux.sh > linux
 chmod +x linux
 echo 'export PATH="$PATH:~/bin"' >> ~/.bashrc # add ~/bin to PATH
+echo 'export PATH="$PATH:~/bin"' >> ~/.bash_profile # add ~/bin to PATH
 ```
-_Note: If you used devbuntu previously, you may have created `linux` function in your .bashrc directly. If you did, please remove it, before installing the new linux.sh Bash script._ 
-
-After that, reopen your terminal window. Now you when you type `linux -h` you should get the following output:
-
-    Starts Docker devbuntu container and mounts the current working directory as /test.
-    Usage: linux [options] [docker options]
-    Options:
-      -h > print help and exit
-      -f > do not mount the current working directory
-      -i <image> -> run this image instead of pokusew/devbuntu:latest
-      -c <entrypoint> -> run this program instead of bash
-      -g <your local IP address> -> enable X11 forwarding, see https://github.com/pokusew/devbuntu#gui-applications
-      -n <name> -> use custom container name
 
 _Alternatively: You can manually download [linux.sh](https://github.com/pokusew/devbuntu/blob/master/linux.sh) and use it as you wish._
 
+After that, reopen your terminal window. Now you when you type `linux -h` or `linux --help`
+you should get the following output:
 
-**Then you can run the image using:** 
+    Starts Docker devbuntu container and mounts the current working directory as /test.
+    Usage: linux [options] [-- docker options]
+    Options:
+      -h, --help > print help and exit
+      -v, --version > print version and exit
+      -n, --name <name> -> use custom container name
+      -nm, --no-mount > do not mount the current working directory
+      -i, --image <image> -> run this image instead of pokusew/devbuntu:latest
+      -c, --entrypoint <entrypoint> -> run this program instead of bash
+      -x, --x11-ip <your local IP address> -> enable X11 forwarding, see https://github.com/pokusew/devbuntu#gui-applications
+    Examples:
+      linux -n test -- --security-opt seccomp=unconfined -p 0.0.0.0:8080:8080/tcp -p 127.0.0.1:12345:12345/tcp
+       > runs container with name test with custom docker run options (all options after "--" are passed directly to the docker run)
+
+**As you can read in the help output, you can run the image using:** 
 
 ```bash
 linux
 ```
 
-or you can pass any `docker run` arguments as well:
+or you can pass any `docker run` arguments after `--` as well:
 
 ```bash
-linux -p 5000:5000/udp
+linux -- -p 5000:5000/udp
 ```
 
 By default, **the current terminal working directory** will be mounted
-as `/test` folder in the container and set as **working directory**. You can disable it with the `-f` option.
+as `/test` folder in the container and set as **working directory**. You can disable it with the `-nm` / `--no-mount` option.
 
 
 ## GUI applications
@@ -122,19 +129,14 @@ valgrind --leak-check=full --track-origins=yes program-to-test
 ## MIPS development with [QtMips](https://github.com/cvut/QtMips)
 
 [QtMips](https://github.com/cvut/QtMips) is MIPS CPU emulator. It is a multi-platform app, which can run on macOS.
-However no builds for macOS are provided, so you have to build QtMips yourselves or you can use my build.
+Builds for macOS are provided (built using [Azure Pipelines](https://dev.azure.com/qtmips/QtMips/_build/latest?definitionId=1&branchName=master)) 
+and **can be downloaded from 📦 [QtMips's GitHub Releases](https://github.com/cvut/QtMips/releases)**. 
 
-**Update:** Currently, I am working on automatized and improved builds for macOS. Once it is finished,
-the changes will be (hopefully) merged into the official [cvut/QtMips](https://github.com/cvut/QtMips) repository.
-
-See [pokusew/QtMips#macos-build](https://github.com/pokusew/QtMips/tree/macos-build) for progress.  
-**See [pokusew/QtMips Azure Pipelines builds](https://dev.azure.com/pokusew/QtMips/_build?definitionId=1) for the new builds.**
-
-> ### Old QtMips builds for macOS
-> see [qtmips-builds's README](/qtmips-builds/README.md)
-
-Once you have QtMips running on your macOS, you need to build your source codes (MIPS assembler or C) to ELF files which can be read and executed by QtMips.
-
-You can setup cross-build using your favourite compiler, or your can use pokusew/devbuntu Docker image for it.
-
-If you have a correctly configured Makefile which uses mips-gcc, use can just run `make` inside the container and you do not have to bother with any setup.
+Once you have QtMips running on your macOS, you have several options how to build and run your code:
+* If you have only a basic assembly code, QtMips's [integrated assembler](https://github.com/cvut/QtMips#integrated-assembler) might work for you.
+* Or you can build your source codes (MIPS assembler or C) using ...
+    * a) ... GCC cross-build toolchain (might be difficult to set up)
+    * b) Or you can build the sources inside a pokusew/devbuntu Docker container which contains
+            preconfigured gcc for MIPS (mips-* commands). If you have a correctly configured Makefile which uses mips-gcc,
+            use can just run `make` inside the container and you do not have to bother with any setup.
+            Or if you want and know how to do it, you can use docker exec from Makefile to invoke the mips-elf-gcc in the running container.
