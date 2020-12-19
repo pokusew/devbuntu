@@ -31,11 +31,11 @@ RUN bash -c "update-alternatives --set c++ $(which clang++)"
 WORKDIR /root
 RUN git clone https://github.com/creationix/nvm.git .nvm
 WORKDIR /root/.nvm
-RUN git checkout v0.35.1
+RUN git checkout v0.37.2
 
 # install node.js
 WORKDIR /root
-RUN bash -c "source nvm-init.sh && nvm install 10.* && nvm alias default 10.*"
+RUN bash -c "source nvm-init.sh && nvm install 14.* && nvm alias default 14.*"
 RUN bash -c "source nvm-init.sh && npm i -g yarn"
 
 WORKDIR /
