@@ -104,6 +104,7 @@ docker_run_args+=("PS_NAME=${container_name^}") # uppercase the first letter
 
 if [[ $mount -eq 1 ]]; then
 	# --mount type=bind,source=$PWD,destination=/test is equivalent to -v $PWD:/test
+	# https://docs.docker.com/engine/reference/commandline/service_create/#add-bind-mounts-volumes-or-memory-filesystems
 	docker_run_args+=("--mount")
 	docker_run_args+=("type=bind,source=$PWD,destination=/test")
 	docker_run_args+=("-w")
